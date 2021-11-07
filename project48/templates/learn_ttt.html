@@ -1,0 +1,35 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<style>
+.img-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.tutorial-img {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+}
+
+</style>
+
+    <div>
+         <h2 class="mt-4">Tic Tac Toe Game</h2>
+         <p class="text-mt-5" style="font-size: 24px; text-indent:70px">Game tic tac toe นั้นมีวิธีการเล่นคือ จะแบ่งเป็นสองฝ่าย ผู้เล่น และ AI โดยเราจะสามารถเลือกได้ว่าจะให้ฝั่งไหนเริ่มก่อน ฝั่งที่สามารถเรียง3ตัวได้ก่อนจะเป็นฝ่ายชนะ ไม่ว่าจะเป็น บน ล่าง ซ้าย ขวา หรือแนวทแยง</p>
+        <div class="img-wrapper w-100">
+            <img class="tutorial-img" src="/media/upload/tictactoe.png" alt="" />
+        </div>
+        <p class="text-mt-5" style="font-size: 24px; text-indent:70px">โดยในเว็บของเรานั้นจะสามารถเลือกระดับความเก่งของ AI ได้ โดยจะมีอยู่ 3 ระดับ</p>
+        <div class="img-wrapper w-100">
+            <img class="tutorial-img" src="/media/upload/difficult.png" alt="" />
+        </div>
+        <p class="text-mt-5" style="font-size: 24px; text-indent:70px">ง่าย, กลาง, ยาก โดยแต่ละระดับนั้นความเก่งของ AI ก็จะไม่เหมือนกัน</p>
+        <p class="text-mt-5" style="font-size: 24px; text-indent:70px">เมื่อเริ่มเล่นแล้ว ข้างขวาของหน้าจอจะมีบอกประวัติการลงว่าใครลงช่องใดไปบ้าง</p>
+        <div class="img-wrapper w-100">
+            <img class="tutorial-img" src="/media/upload/history.png" alt="" />
+        </div>
+        <p class="text-mt-5" style="font-size: 24px; text-indent:70px">และสามารถกด Restart เพื่อเล่นอีกครั้งหรือ Newgame เพื่อเลือกระดับ AI ใหม่ได้</p>
+    </div>
+{% endblock %}

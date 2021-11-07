@@ -1,0 +1,69 @@
+{% extends "layouts/base.html" %}
+{% load humanize %}
+{% block content %}
+
+
+
+
+<div class="card mb-3 mt-5 p-1">
+    <div class="row g-0">
+        <div class="col-md-2 d-flex justify-content-center align-items-center">
+            <img id="botImage"
+                src="https://images.unsplash.com/photo-1610450949065-1f2841536c88?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1287&q=80"
+                alt="Avatar Logo" style="width:80px;height:80px;" class="rounded-circle z-depth-2">
+        </div>
+        <div class="col-md-10">
+            <div class="card-body">
+                <h4 class="card-title">{{ request.user }}</h4>
+                    <kbd style="background-color: grey;">Total {{ totalgame }}</kbd> 
+                    <kbd style="background-color: green">Win {{ wingame }}</kbd> 
+                    <kbd style="background-color: red">Lose {{ losegame }}</kbd> 
+                    <kbd style="background-color: steelblue">Tie {{ tiegame }}</kbd>
+                    <kbd style="background-color: darkorange">Win Rate {{ winrate|floatformat:2|intcomma  }}</kbd> 
+            </div>
+        </div>
+    </div>
+</div>
+  
+<table class="table table-Secondary table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Game Id</th>
+            <th scope="col">Bot AI</th>
+            <th scope="col">Level</th>
+            <th scope="col">Status</th>
+            <th scope="col">Date</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for g in games %}
+        <tr>
+            <th scope="row">{{ g.game_id }}</th>
+            <td>{{ g.bot.name }}</td>
+            <td>{{ g.bot.level }}</td>
+            <td>{{ g.status }}</td>
+            <td>{{ g.created }}</td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+
+<ul class="pagination">
+    {% if games.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page ={{ games.previous_page_number }}">Previous</a></li>
+    {% endif %}
+
+    {% for i in games.paginator.page_range %}
+    <li class="page-item {% if games.number == i %}active{% endif %}">
+        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+    </li>
+    {% endfor %}
+
+    {% if games.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{ games.next_page_number }}">Next</a></li>
+    {% endif %}
+</ul>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<style>
+.img-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.tutorial-img {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+}
+</style>
+
+<div>
+    <h2 class="mt-4">Login & Register</h2>
+    <p class="text-center mt-5" style="font-size: 24px; text-indent:70px">การจะเข้าไปดู Profile และประวัติการเล่นของเรานั้นเราจะต้องทำการ Login ก่อน ซึ่งถ้าเรายังไม่มี ID สามารถ Register ได้ที่นี่</p>
+    <div class="img-wrapper w-100">
+        <img class="tutorial-img" src="/media/upload/signup_learn1.png" alt="" />
+    </div>
+</div>
+
+<div class="img-wrapper w-100 mt-5">
+    <img class="tutorial-img" src="/media/upload/register_in.png" alt="" />
+</div>
+
+<div>
+        <p class="" style="font-size: 24px; text-indent:70px">1.ใส่user nameที่ตัวเองคิด</p>
+        <p class="" style="font-size: 24px; text-indent:70px">2.ใส่ Email ที่ต้องการใช้ในการสมัคร</p>
+        <p class="" style="font-size: 24px; text-indent:70px">3.ตั้ง Password</p>
+        <p class="" style="font-size: 24px; text-indent:70px">4.กฎที่ใช้ในการตั้ง Password</p>
+        <p class="" style="font-size: 24px; text-indent:70px">5.ใส่ Password อีกครั้ง</p>
+        <p class="" style="font-size: 24px; text-indent:70px">6.กดยืนยัน</p>
+</div>
+
+<div>
+    <p class="text-mt-5" style="font-size: 24px; text-indent:70px">เมื่อ Register เสร็จแล้วกดตรงนี้เพื่อ Login</p>
+    <div class="img-wrapper w-100">
+        <img class="tutorial-img" src="/media/upload/signin_learn1.png" alt="" />
+    </div>
+</div>
+
+{% endblock %}

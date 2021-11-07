@@ -1,0 +1,572 @@
+{% extends "layouts/base.html" %}
+
+
+{% block title %}
+Play Games!
+{% endblock %}
+
+
+{% block content %}
+<style>
+    td {
+        border: 2px solid #333;
+        height: 220px;
+        width: 210px;
+        text-align: center;
+        vertical-align: center;
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        font-size: 100px;
+        cursor: pointer;
+    }
+
+
+    table tr:first-child td {
+        border-top: 0;
+    }
+
+    table tr:last-child td {
+        border-bottom: 0;
+    }
+
+    table tr td:first-child {
+        border-left: 0;
+    }
+
+    table tr td:last-child {
+        border-right: 0;
+    }
+
+    .endgame {
+        display: none;
+        width: 190px;
+        top: 120px;
+        background-color: rgba(205, 133, 63, 0.8);
+        position: absolute;
+        left: 50%;
+        margin-left: -100px;
+        padding-top: 50px;
+        padding-bottom: 50px;
+        text-align: center;
+        border-radius: 5px;
+        color: white;
+        font-size: 2em;
+    }
+</style>
+
+<div class="col">
+    <div class="row p-3 mt-4">
+        <div class="col-md-1 d-flex justify-content-end">
+            <img id="botImage" src="" alt="Avatar Logo" style="width:65px;height:65px;"
+                class="rounded-circle z-depth-2">
+        </div>
+        <div class="col-md-11">
+            <div class="row mb-0">
+                <p id="botName" class="lead "></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 d-flex justify-content-center">
+        <table class="">
+            <tr>
+                <td class="cell" id="0"></td>
+                <td class="cell" id="1"></td>
+                <td class="cell" id="2"></td>
+            </tr>
+            <tr>
+                <td class="cell" id="3"></td>
+                <td class="cell" id="4"></td>
+                <td class="cell" id="5"></td>
+            </tr>
+            <tr>
+                <td class="cell" id="6"></td>
+                <td class="cell" id="7"></td>
+                <td class="cell" id="8"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-4 d-none" id="historyTab">
+        <h2>Games History</h2>
+        <hr>
+        <div id="list-1" class="list-groupx">
+
+        </div>
+        <div class="buttonEndGame d-grid gap-1 mt-2">
+            <button type="button" onClick="startGame()" class="btn btn-dark btn-block mt-2"><i
+                    class="fas fa-retweet"></i> Restart</button>
+            <button type="button" onClick="newGame()" class="btn btn-dark btn-block mt-2"><i
+                    class="fas fa-plus-circle"></i> New Game</button>
+        </div>
+    </div>
+    <div class="col-md-4 p-1 " id="selectTab">
+        <h2 class="d-flex justify-content-center">Play vs...</h2>
+        <div class="d-flex justify-content-center mt-4">
+            <img id="botImageSelect"
+                src="https://images.unsplash.com/photo-1610450949065-1f2841536c88?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1287&q=80"
+                alt="Avatar Logo" style="width:55px;height:55px;" class="rounded-circle z-depth-2">
+        </div>
+        <h5 id="botNameSelect" class="d-flex justify-content-center  mt-3">{{ bots.0.name }} </h5>
+        <p id="botDesc" class="text-center  mt-3 mb-3">Center aligned text on all viewport sizes. </p>
+        <div class="container d-grid gap-2 mb-3">
+            <div class=" text-center">
+                <div class="d-grid gap-4 d-md-block mb-1">
+                    <span class="d-flex justify-content-center mb-1">BEGINNER</span>
+                    <button class="btn btn-floating"
+                        onClick="selectBot('{{ bots.0.bot_id }}', '{{ bots.0.name }}', '{{ bots.0.description }}', '{{ bots.0.image.url }}')"
+                        type="button">
+                        <img src="{{ bots.0.image.url }}" alt="{{ bots.0.name }}" style="width:50px;height:50px;"
+                            class="rounded-circle z-depth-2">
+                    </button>
+                    <button class="btn btn-floating"
+                        onClick="selectBot('{{ bots.3.bot_id }}', '{{ bots.3.name }}', '{{ bots.3.description }}', '{{ bots.3.image.url }}')"
+                        type="button">
+                        <img src="{{ bots.3.image.url }}" alt="{{ bots.3.name }}" style="width:50px;height:50px;"
+                            class="rounded-circle z-depth-2">
+                    </button>
+                </div>
+                <div class="d-grid gap-4 d-md-block mb-1">
+                    <span class="d-flex justify-content-center mb-1">INTERMEDIATE</span>
+                    <button class="btn btn-floating"
+                        onClick="selectBot('{{ bots.1.bot_id }}', '{{ bots.1.name }}', '{{ bots.1.description }}', '{{ bots.1.image.url }}')"
+                        type="button">
+                        <img src="{{ bots.1.image.url }}" alt="{{ bots.1.name }}" style="width:50px;height:50px;"
+                            class="rounded-circle z-depth-2">
+                    </button>
+                </div>
+                <div class="d-grid gap-4 d-md-block ">
+                    <span class="d-flex justify-content-center mb-1">ADVANCED</span>
+                    <button class="btn btn-floating"
+                        onClick="selectBot('{{ bots.2.bot_id }}', '{{ bots.2.name }}', '{{ bots.2.description }}', '{{ bots.2.image.url }}')"
+                        type="button">
+                        <img src="{{ bots.2.image.url }}" alt="{{ bots.2.name }}" style="width:50px;height:50px;"
+                            class="rounded-circle z-depth-2">
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-group d-flex">
+            <input type="radio" class="btn-check" name="options" id="radio1" autocomplete="off">
+            <label class="btn btn-outline-dark" for="radio1">X</label>
+
+            <input type="radio" class="btn-check" name="options" id="radio2" autocomplete="off" checked>
+            <label class="btn btn-outline-dark" for="radio2">O</label>
+        </div>
+
+        <div class="form-check form-switch mt-3">
+            <label class="form-check-label" for="flexSwitchCheckDefault">Computer goes first</label>
+            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+        </div>
+        <div class="buttonEndGame d-grid gap-1 mt-2">
+            <button type="button" onClick="startGame()" class="btn btn-success btn-block mt-2"><i
+                    class="fas fa-play-circle"></i> Start Game</button>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="row p-3 mt-4">
+    <div class="col-md-1 d-flex justify-content-end">
+        <img src="\media\upload\profile.png" alt="Avatar Logo" style="width:65px;height:65px;"
+            class="rounded-circle z-depth-2">
+    </div>
+    <div class="col-md-11">
+        <div class="row mb-0">
+            {% if not user.is_authenticated %}
+            <p class="lead">Guest</p>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+            <p class="lead">{{ request.user }}</p>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+</div>
+<div class="endgame">
+    <div class="text"></div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<script type='text/javascript'>
+    console.log('{{ bots }}')
+
+    var origBoard;
+    var arrEle = [];
+    var huPlayer = 'O';
+    var aiPlayer = 'X';
+    const winCombos = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [6, 4, 2]
+    ]
+
+    let history = []
+    let botStartFirst = false;
+    let botSelect = 1;
+    var stepNumber = 0;
+
+    const cells = document.querySelectorAll('.cell');
+
+
+
+    function selectBot(id, name, desc, imageUrl) {
+        console.log("this is ", id)
+        botSelect = id;
+        document.querySelector('#botName').innerText = name;
+        document.querySelector('#botNameSelect').innerText = name;
+        document.querySelector('#botDesc').innerText = desc;
+        document.querySelector('#botImageSelect').src = imageUrl;
+        document.querySelector('#botImage').src = imageUrl;
+        console.log(name)
+    }
+
+    selectBot('{{ bots.0.bot_id }}', '{{ bots.0.name }}', '{{ bots.0.description }}', '{{ bots.0.image.url }}')
+
+    var checkbox = document.querySelector('#flexSwitchCheckDefault');
+    checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+            botStartFirst = true;
+            console.log("check")
+        } else {
+            botStartFirst = false;
+            console.log("uncheck")
+        }
+    })
+
+    var radio1 = document.querySelector('#radio1');
+    radio1.addEventListener('change', () => {
+        if (radio1.checked) {
+            huPlayer = 'X';
+            aiPlayer = 'O';
+        } else {
+            huPlayer = 'O';
+            aiPlayer = 'X';
+        }
+    })
+
+
+    var radio2 = document.querySelector('#radio2');
+    radio2.addEventListener('change', () => {
+        if (radio2.checked) {
+            huPlayer = 'O';
+            aiPlayer = 'X';
+        } else {
+            huPlayer = 'X';
+            aiPlayer = 'O';
+        }
+    })
+
+
+    function startGame() {
+        console.log(huPlayer, aiPlayer)
+        // document.querySelector(".endgame").style.display = "none";
+        document.querySelector("#selectTab").classList.add("d-none");
+        document.querySelector("#historyTab").classList.remove("d-none");
+        origBoard = Array.from(Array(9).keys());
+        history = []
+        history.push(Array.from(origBoard));
+        for (let i = 0; i < arrEle.length; i++) {
+            arrEle[i].remove();
+        }
+        arrEle = []
+
+        var btn = document.createElement("button");
+        btn.innerHTML = "Go To Game Star"
+        btn.classList.add("list-group-item");
+        btn.classList.add("list-group-item-action");
+        btn.onclick = function () { setState(0) };
+        arrEle.push(btn);
+        console.log("inarrEle : " + arrEle.length)
+        document.getElementById("list-1").appendChild(btn);
+
+
+
+        for (var i = 0; i < cells.length; i++) {
+            cells[i].innerText = '';
+            cells[i].style.removeProperty('background-color');
+            cells[i].addEventListener('click', turnClick, false);
+        }
+
+        if (botStartFirst) {
+            turn(bestSpot(), aiPlayer);
+        }
+
+    }
+
+
+    function newGame() {
+        document.querySelector("#selectTab").classList.remove("d-none");
+        document.querySelector("#historyTab").classList.add("d-none");
+        for (var i = 0; i < cells.length; i++) {
+            cells[i].style.backgroundColor = "white";
+            cells[i].innerText = "";
+            cells[i].removeEventListener('click', turnClick, false);
+        }
+
+
+    }
+
+
+    function turnClick(square) {
+        if (typeof origBoard[square.target.id] == 'number') {
+            console.log("histotry before!")
+            history = history.slice(0, stepNumber + 1)
+            for (let i = stepNumber + 1; i < arrEle.length; i++) {
+                arrEle[i].remove()
+            }
+            arrEle = arrEle.slice(0, stepNumber + 1)
+
+            turn(square.target.id, huPlayer)
+            // addButton(stepNumber, square.target.id)
+
+
+            if (!checkWin(origBoard, huPlayer) && !checkTie()) {
+                turn(bestSpot(), aiPlayer);
+                checkTie();
+            }
+
+            console.log(stepNumber + "show ")
+            console.log("arr" + arrEle.length)
+        }
+
+    }
+
+    function addButton(s, value) {
+        var btn = document.createElement("button");  //<button> element
+        if (stepNumber % 2 == 0) {
+            btn.innerHTML = "Your " + stepNumber + " Go to move #" + value;
+        } else {
+            btn.innerHTML = "Bot " + stepNumber + " Go to move #" + value;
+            btn.disabled = true;
+        }
+        btn.classList.add("list-group-item");
+        btn.classList.add("list-group-item-action");
+        btn.onclick = function () { setState(s) };
+        arrEle.push(btn);
+        document.getElementById("list-1").appendChild(btn);
+    }
+
+    function test() {
+        arrEle[0].remove();
+        console.log(arrEle);
+    }
+
+
+
+    function setState(setValue) {
+        stepNumber = setValue;
+        console.log(setValue, history[setValue])
+        for (let i = 0; i < 9; i++) {
+            if (typeof history[setValue][i] !== 'number')
+                document.getElementById(i).innerText = history[setValue][i];
+            else
+                document.getElementById(i).innerText = '';
+        }
+        // console.log(history)
+        origBoard = history[setValue].slice();
+
+    }
+
+    function turn(squareId, player) {
+        origBoard[squareId] = player;
+        console.log("player" + player)
+        document.getElementById(squareId).innerText = player;
+        history.push(Array.from(origBoard))
+        stepNumber++;
+        addButton(stepNumber, squareId)
+        let gameWon = checkWin(origBoard, player)
+        if (gameWon) gameOver(gameWon)
+    }
+
+    function checkWin(board, player) {
+        let plays = board.reduce((a, e, i) =>
+            (e === player) ? a.concat(i) : a, []);
+        // console.log("plays", plays)
+        let gameWon = null;
+        for (let [index, win] of winCombos.entries()) {
+            // console.log("win", index, win)
+            if (win.every(elem => plays.indexOf(elem) > -1)) {
+                gameWon = { index: index, player: player };
+                break;
+            }
+        }
+        return gameWon;
+    }
+
+    function gameOver(gameWon) {
+        for (let index of winCombos[gameWon.index]) {
+            document.getElementById(index).style.backgroundColor =
+                gameWon.player == huPlayer ? "#7EB5A6" : "#86340A";
+        }
+        for (var i = 0; i < cells.length; i++) {
+            cells[i].removeEventListener('click', turnClick, false);
+        }
+
+        for (let i = 0; i < arrEle.length; i++) {
+            arrEle[i].disabled = true;
+        }
+
+        let status = gameWon.player == huPlayer ? "WIN" : "LOSE";
+        let who = gameWon.player == huPlayer ? "You win!" : "You lose!";
+        let str = gameWon.player == huPlayer ? `<i class="fas fa-crown"></i> WIN!` : `<i class="fas fa-window-close"></i> LOSE!`
+        testAxios(status)
+        declareWinner(str, who);
+    }
+
+    function declareWinner(str, who) {
+        // document.querySelector(".endgame").style.display = "block";
+        // document.querySelector(".endgame .text").innerText = who;
+        console.log("test declareWiner")
+        document.querySelector(".modal-title").innerHTML = `<h5 class="modal-title" id="exampleModalLongTitle">` + str + `</h5>`;
+        document.querySelector(".modal-body").innerText = who;
+        // $("#exampleModalCenter").val(" Hello...How are you?");
+        var exampleModalPopup = new bootstrap.Modal(document.getElementById("exampleModal"), {});
+        exampleModalPopup.show();
+    }
+
+    function emptySquares() {
+        return origBoard.filter(s => typeof s == 'number');
+    }
+
+    function bestSpot() {
+        if (botSelect == 1) {
+            return emptySquares()[0];
+        } else if (botSelect == 3) {
+            return minimax(origBoard, aiPlayer).index;
+        }
+    }
+    // function bestSpot(){
+    //     return emptySquares()[0];
+    // }
+
+    function checkTie() {
+        if (emptySquares().length == 0) {
+            for (var i = 0; i < cells.length; i++) {
+                cells[i].style.backgroundColor = "green";
+                cells[i].removeEventListener('click', turnClick, false);
+            }
+
+            for (let i = 0; i < arrEle.length; i++) {
+                arrEle[i].disabled = true;
+            }
+
+            testAxios("TIE")
+            declareWinner(`<i class="fas fa-fish"></i> TIE!`, "Tie Game!")
+            return true;
+        }
+        return false;
+    }
+
+    function minimax(newBoard, player) {
+        var availSpots = emptySquares();
+
+        if (checkWin(newBoard, huPlayer)) {
+            return { score: -10 };
+        } else if (checkWin(newBoard, aiPlayer)) {
+            return { score: 10 };
+        } else if (availSpots.length === 0) {
+            return { score: 0 };
+        }
+        var moves = [];
+        for (var i = 0; i < availSpots.length; i++) {
+            var move = {};
+            move.index = newBoard[availSpots[i]];
+            newBoard[availSpots[i]] = player;
+
+            if (player == aiPlayer) {
+                var result = minimax(newBoard, huPlayer);
+                move.score = result.score;
+            } else {
+                var result = minimax(newBoard, aiPlayer);
+                move.score = result.score;
+            }
+
+            newBoard[availSpots[i]] = move.index;
+
+            moves.push(move);
+        }
+
+        var bestMove;
+        if (player === aiPlayer) {
+            var bestScore = -10000;
+            for (var i = 0; i < moves.length; i++) {
+                if (moves[i].score > bestScore) {
+                    bestScore = moves[i].score;
+                    bestMove = i;
+                }
+            }
+        } else {
+            var bestScore = 10000;
+            for (var i = 0; i < moves.length; i++) {
+                if (moves[i].score < bestScore) {
+                    bestScore = moves[i].score;
+                    bestMove = i;
+                }
+            }
+        }
+
+        return moves[bestMove];
+    }
+
+
+
+
+    function testAxios(status) {
+        console.log("{{ user.is_authenticated }}")
+        if (JSON.parse("{{ user.is_authenticated }}".toLowerCase())) {
+            console.log('test axios')
+            let data = new FormData(); // 2
+
+            console.log(botSelect)
+            data.append("bot", botSelect)
+            data.append("status", status)
+            data.append("Board", origBoard)
+            data.append("csrfmiddlewaretoken", '{{csrf_token}}') // 3
+
+            axios.post("/crate_game/", data) // 4
+                // .then(res => alert("Form Submitted")) // 5
+                .catch(errors => console.log(errors)) // 6
+
+        }
+
+    }
+
+
+
+</script>
+
+{% if user.is_authenticated %}
+<script>
+    console.log("test!!")
+</script>
+{% endif %}
+
+
+{% endblock %}
